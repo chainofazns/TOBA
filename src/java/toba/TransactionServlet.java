@@ -1,3 +1,5 @@
+package toba;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Leo
  */
-@WebServlet(urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/TransactionServlet"})
+public class TransactionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +38,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet TransactionServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TransactionServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,32 +59,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String url = "login.html";
-        
-        String action = request.getParameter("action");
-        if (action == null){
-            action = "main"; //Default action
-        }
-        
-        if(action.equals("main")){
-            url = "/login.html";
-        } else if (action.equals("login")) {
-            //Retrieve inputs
-            String user = request.getParameter("username");
-            String pass = request.getParameter("password");
-        
-        if (user.equalsIgnoreCase("jsmith@toba.com") && pass.equalsIgnoreCase("letmein")){
-            url = "/Account_activity.html";
-        }else{
-            url = "/Login_failure.html";
-        }
-        }
-        
-        getServletContext()
-                .getRequestDispatcher(url)
-                .forward(request, response);
-            
+        processRequest(request, response);
     }
 
     /**
@@ -96,8 +73,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         processRequest(request, response);
-            
+        processRequest(request, response);
     }
 
     /**

@@ -6,12 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>TOBA: New Customer</title>
-    </head> 
-    <body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <c:import url="/header.html"/>
+
         <header><h1>New Customer</h1></header>
         <div>
             Please out all the information below <br>
@@ -20,24 +17,23 @@
         
         <form action="NewCustomer" method ="post">
             <label>First Name</label>
-            <input type="text" name =firstName><br>
+            <input type="text" name =firstName value="${user.firstName}"><br>
             <label>Last Name</label>
-            <input type="text" name ="lastName"><br>
+            <input type="text" name ="lastName" value="${user.lastName}"><br>
             <label>Phone Number</label>
-            <input type="text" name ="phone"><br>
+            <input type="text" name ="phone" value="${user.phone}"><br>
             <label>Address</label>
-            <input type="text" name ="address"><br>
+            <input type="text" name ="address" value="${user.address}"><br>
             <label>City</label>
-            <input type="text" name ="city"><br>
+            <input type="text" name ="city" value="${user.city}"><br>
             <label>State</label>
-            <input type="text" name ="state"><br>
+            <input type="text" name ="state" value="${user.state}"><br>
             <label>Zip Code</label>
-            <input type="text" name ="zipcode"><br>
+            <input type="text" name ="zipcode" value="${user.zipcode}"><br>
             <label>Email</label>
-            <input type="email" name ="email"><br>
+            <input type="email" name ="email" value="${user.email}"><br>
             <input type ="hidden" name="action" value ="register">
             <input type="submit" value="Submit">
         </form>
         
-    </body>
-</html>
+        <c:import url = "footer.jsp"/>

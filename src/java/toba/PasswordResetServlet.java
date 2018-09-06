@@ -3,21 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package toba;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 /**
  *
  * @author Leo
  */
-@WebServlet(urlPatterns = {"/NewCustomerServlet"})
-public class NewCustomerServlet extends HttpServlet {
+public class PasswordResetServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +33,10 @@ public class NewCustomerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewCustomerServlet</title>");            
+            out.println("<title>Servlet PasswordResetServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewCustomerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PasswordResetServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -71,45 +68,50 @@ public class NewCustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String url = "/New_customer.jsp";
+        String url = "/password_reset.jsp";
         
         String action = request.getParameter("action");
-        if (action == null){
-            action = "main";           
-        } 
-        if (action.equals("main")){
-            url = "/index.html";
-        } else if (action.equals("register")) {
-            //get parameters
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-            String city = request.getParameter("city");
-            String state = request.getParameter("state");
-            String zipcode = request.getParameter("zipcode");
-            String email = request.getParameter("email");
-            
-            //dont store yet?
-            String message;
-         //validate
-            if(firstName == null || lastName == null || phone == null || address == null || 
-                city == null || state == null || zipcode == null || email == null || 
-                firstName.isEmpty() || lastName.isEmpty() || phone .isEmpty() || address.isEmpty() || 
-                city.isEmpty() ||  state.isEmpty() ||  zipcode.isEmpty() ||  email.isEmpty()
-                ){
-                message = "Please fill out all the text boxes";
-                url = "/New_customer.jsp";
-            } else {
-                message = "";
-                url = "/Success.html";
-            }               
-            request.setAttribute("message", message);
+        
+        if(action==null){
+            action = "main";
         }
-        getServletContext()
+        if(action.equals("main")){
+            url = "/index.html";
+        } else if (action.equals("newpass")){
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+             //check session and grab user
+             HttpSession session = request.getSession();
+             User user =(User) session.getAttribute("user");
+             if (user == null) {
+                //they shouldnt be here
+                 url ="/index.html";
+                } else {
+                 
+                 String message;
+                 
+                 //if user exists then they can go change its password
+                 if(user.getPassword().equals(oldPassword)){
+                     //user enters correct password
+                     user.setPassword(newPassword);
+                     //push to session
+                     session.setAttribute("user", user);
+                     //add to db not implemented
+                     message = "Password Changed";
+                     url = "/Account_activity.jsp";
+                    } else {
+                     //incorrect password
+                     message = "Incorrect Password";
+                     url = "/password_reset.jsp";
+                    }
+                 request.setAttribute("message", message);
+                }
+             getServletContext()
                 .getRequestDispatcher(url)
                 .forward(request, response);
+        }
+            
+       
         
     }
 
