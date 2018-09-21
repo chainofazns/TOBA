@@ -31,4 +31,5 @@
         <label>Password:</label>
         <span>${user.password}</span><br>
         
+        <nav> <a href="addfunds.jsp"> Add Funds</a> </nav>
     <c:import url = "footer.jsp"/>

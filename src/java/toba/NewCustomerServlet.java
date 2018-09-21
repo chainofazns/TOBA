@@ -94,13 +94,14 @@ public class NewCustomerServlet extends HttpServlet {
             
             //create session
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
+            TOBAUser user = (TOBAUser) session.getAttribute("user");
             if (user == null){
                 //if no user, create blank user
-                user = new User();
+                user = new TOBAUser();
             }
             
             String message;
+            double balance;
          //validate
             if(firstName == null || lastName == null || phone == null || address == null || 
                 city == null || state == null || zipcode == null || email == null || 
@@ -116,6 +117,7 @@ public class NewCustomerServlet extends HttpServlet {
                 user.setPhone(phone);
                 user.setAddress(address);
                 user.setCity(city);
+                user.setState(state);
                 user.setZipcode(zipcode);
                 user.setEmail(email);
                 user.setUsername(lastName + zipcode);
@@ -126,6 +128,9 @@ public class NewCustomerServlet extends HttpServlet {
                 
                 message = "User Created";
                 url = "/Success.jsp";
+                UserDB.insert(user);
+                Account account = new Account(user.getUserId(), 25.00);
+                AccountDB.insert(account);
             }               
             request.setAttribute("message", message);
         }

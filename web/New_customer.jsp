@@ -17,7 +17,7 @@
         
         <form action="NewCustomer" method ="post">
             <label>First Name</label>
-            <input type="text" name =firstName value="${user.firstName}"><br>
+            <input type="text" name ="firstName" value="${user.firstName}"><br>
             <label>Last Name</label>
             <input type="text" name ="lastName" value="${user.lastName}"><br>
             <label>Phone Number</label>

@@ -5,50 +5,65 @@
  */
 package toba;
 
-import java.beans.*;
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author Leo
  */
-public class User implements Serializable {
+@Entity
+public class TOBAUser implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int userId;
     private String firstName;
     private String lastName;
     private String phone;
     private String address;
     private String city;
-    private String state;
+    private String states;
     private String zipcode;
     private String email;
     private String username;
     private String password;
     
-    public User(){
+    
+    public TOBAUser(){
         firstName = "";
         lastName = "";
         phone = "";
         address = "";
         city = "";
-        state = "";
+        states = "";
         zipcode = "";
         email = "";
         username = "";
         password = "";
     }
     
-    public User(String firstName, String lastName, String phone, 
-            String address, String city, String state, String zipcode, String email, String username, String Password){
+    public TOBAUser(String firstName, String lastName, String phone, 
+            String address, String city, String state, String zipcode, String email, String username, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.address = address;
         this.city = city;
-        this.state = state;
+        this.states = state;
         this.zipcode = zipcode;
         this.email = email;
         this.username = username;
         this.password = password;
+    }
+    public int getUserId(){
+        return userId;
+    }
+    
+    public void setUserId(int userId){
+        this.userId = userId;
     }
     
     public String getFirstName(){
@@ -87,10 +102,10 @@ public class User implements Serializable {
     }
     
     public String getState(){
-        return state;
+        return states;
     }
     public void setState(String state){
-        this.state = state;
+        this.states = state;
     }
     
     public String getZipcode(){
@@ -119,5 +134,5 @@ public class User implements Serializable {
     }
     public void setPassword(String Password){
         this.password = Password;
-    }    
+    } 
 }

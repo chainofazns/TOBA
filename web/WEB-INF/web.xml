@@ -16,6 +16,10 @@
         <servlet-name>PasswordResetServlet</servlet-name>
         <servlet-class>toba.PasswordResetServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddFundsServelet</servlet-name>
+        <servlet-class>toba.AddFundsServelet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -32,4 +36,13 @@
         <servlet-name>PasswordResetServlet</servlet-name>
         <url-pattern>/PasswordReset</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddFundsServelet</servlet-name>
+        <url-pattern>/AddFunds</url-pattern>
+    </servlet-mapping>
+    <resource-ref>
+  <res-ref-name>jdbc/toba</res-ref-name>
+  <res-type>javax.sql.DataSource</res-type>
+  <res-auth>Container</res-auth>
+</resource-ref>
 </web-app>

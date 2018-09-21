@@ -7,14 +7,17 @@ package toba;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Leo
  */
-public class PasswordResetServlet extends HttpServlet {
+public class AddFundsServelet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,10 +36,10 @@ public class PasswordResetServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PasswordResetServlet</title>");            
+            out.println("<title>Servlet AddFundsServelet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PasswordResetServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddFundsServelet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,52 +71,40 @@ public class PasswordResetServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "/password_reset.jsp";
-        
-        String action = request.getParameter("action");
-        
-        if(action==null){
-            action = "main";
-        }
-        if(action.equals("main")){
+       String url = "/addfunds.jsp";
+       
+       String action = request.getParameter("action");
+       
+       if(action == null){
+           action = "main";
+       }
+       if(action.equals("main")){
             url = "/index.html";
-        } else if (action.equals("newpass")){
-            String oldPassword = request.getParameter("oldPassword");
-            String newPassword = request.getParameter("newPassword");
-             //check session and grab user
-             HttpSession session = request.getSession();
-             TOBAUser user =(TOBAUser) session.getAttribute("user");
+       } else if (action.equals("deposit")) {
+           
+           
+            HttpSession session = request.getSession();
+            TOBAUser user =(TOBAUser) session.getAttribute("user");
              if (user == null) {
                 //they shouldnt be here
-                 url ="/index.html";
-                } else {
-                 
-                 String message;
-                 
-                 //if user exists then they can go change its password
-                 if(user.getPassword().equals(oldPassword)){
-                     //user enters correct password
-                     user.setPassword(newPassword);
-                     //push to session
-                     session.setAttribute("user", user);
-                     //add to db not implemented
-                     message = "Password Changed";
-                     url = "/Account_activity.jsp";
-                     UserDB.update(user);
-                    } else {
-                     //incorrect password
-                     message = "Incorrect Password";
-                     url = "/password_reset.jsp";
-                    }
-                 request.setAttribute("message", message);
+                url ="/index.html";
+             } else {
+                double delta = Double.parseDouble(request.getParameter("delta"));
+                Account account = AccountDB.getAccount(user.getUserId());
+                
+                double balance = account.getBalance();
+                Transaction transaction = new Transaction(user.getUserId(), balance, delta);
+                account.addTransactions(transaction);
+                account.credit(delta);
+                
+                AccountDB.update(account);
+                url = "/Account_activity.jsp";
                 }
-             getServletContext()
+             
+         }
+       getServletContext()
                 .getRequestDispatcher(url)
                 .forward(request, response);
-        }
-            
-       
-        
     }
 
     /**
