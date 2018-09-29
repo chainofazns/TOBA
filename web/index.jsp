@@ -11,4 +11,5 @@
         <header><h1>Titan Online Banking Application</h1></header>
         <br>
         <nav> <a href="Login.jsp"> Login </a> </nav>
+        <nav> <a href="admin/login.html"> Admin </a> </nav>
     <c:import url = "footer.jsp"/>

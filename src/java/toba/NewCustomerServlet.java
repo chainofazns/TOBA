@@ -8,6 +8,7 @@ package toba;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -111,6 +112,22 @@ public class NewCustomerServlet extends HttpServlet {
                 message = "Please fill out all the text boxes";
                 url = "/New_customer.jsp";
             } else {
+                //Assignment 4
+                String password = "welcome1"; //default password
+                String hashedPassword;
+                String salt = "";
+                String saltedAndHashedPassword;
+                
+                try {
+                    hashedPassword = PasswordUtil.hashPassword(password);
+                    salt = PasswordUtil.getSalt();
+                    saltedAndHashedPassword =PasswordUtil.hashAndSaltPassword(password);
+                } catch (NoSuchAlgorithmException ex) {
+                    hashedPassword = ex.getMessage();
+                    saltedAndHashedPassword = ex.getMessage();
+                }
+                
+                
                 //all data has been filled out, so fill it out
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
@@ -121,7 +138,7 @@ public class NewCustomerServlet extends HttpServlet {
                 user.setZipcode(zipcode);
                 user.setEmail(email);
                 user.setUsername(lastName + zipcode);
-                user.setPassword("welcome1"); //defaults to welcome 1
+                user.setPassword(saltedAndHashedPassword); //defaults to welcome 1
                 
                 session.setAttribute("user", user);
                 

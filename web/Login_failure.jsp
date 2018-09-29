@@ -9,5 +9,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <c:import url="/header.html"/>
         <header><h1>Login Failed</h1></header>
-        <div><a href="Login.html">Return</a></div>
+        <div><a href="Login.jsp">Return</a></div>
     <c:import url = "footer.jsp"/>
